@@ -10,7 +10,7 @@ MongoClient.connect(url).then((client) => {
     console.log('Connected correctly to server');
     const db = client.db(dbname);
 
-    dboper.insertDocument(db, { name: "Vadonut", description: "Test"},
+    dboper.insertDocument(db, { name: "Vadonut", description: "Test" },
         "dishes")
         .then((result) => {
             console.log("Insert Document:\n", result.ops);
@@ -21,7 +21,7 @@ MongoClient.connect(url).then((client) => {
             console.log("Found Documents:\n", docs);
 
             return dboper.updateDocument(db, { name: "Vadonut" },
-                    { description: "Updated Test" }, "dishes");
+                { description: "Updated Test" }, "dishes");
 
         })
         .then((result) => {
@@ -31,7 +31,7 @@ MongoClient.connect(url).then((client) => {
         })
         .then((docs) => {
             console.log("Found Updated Documents:\n", docs);
-                            
+
             return db.dropCollection("dishes");
         })
         .then((result) => {
@@ -42,4 +42,4 @@ MongoClient.connect(url).then((client) => {
         .catch((err) => console.log(err));
 
 })
-.catch((err) => console.log(err));
+    .catch((err) => console.log(err));
