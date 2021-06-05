@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 const dishRouter = require('./routes/dishRouter');
-const promotionRouter = require('./routes/promotionRouter');
+const promotionRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
 
 app.use(express.static(__dirname + '/public'));
