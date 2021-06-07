@@ -10,12 +10,12 @@ usersRouter.use(bodyParser.json());
 
 /* GET users listing. */
 usersRouter.route('/')
-  .get(authenticate.verifyUser, (req, res, next) => {
-    if (!authenticate.verifyAdmin(req)) {
-      var err = new Error('You are not authorized to perform this operation!');
-      err.status = 403;
-      return next(err);
-    }
+  .get(authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
+    // if (!authenticate.verifyAdmin(req)) {
+    //   var err = new Error('You are not authorized to perform this operation!');
+    //   err.status = 403;
+    //   return next(err);
+    // }
     User.find({})
       .then((users) => {
         res.statusCode = 200;
