@@ -17,6 +17,11 @@ leaderRouter.route('/')
             .catch((err) => next(err));
     })
     .post(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         Leaders.create(req.body)
             .then((leader) => {
                 console.log('Leader Created ', leader);
@@ -27,10 +32,20 @@ leaderRouter.route('/')
             .catch((err) => next(err));
     })
     .put(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         res.statusCode = 403;
         res.end('PUT operation not supported on /leaders');
     })
     .delete(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         Leaders.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -51,10 +66,20 @@ leaderRouter.route('/:leaderId')
             .catch((err) => next(err));
     })
     .post(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         res.statusCode = 403;
         res.end('POST operation not supported on /leaders/' + req.params.leaderId);
     })
     .put(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         Leaders.findByIdAndUpdate(req.params.leaderId, {
             $set: req.body
         }, { new: true })
@@ -66,6 +91,11 @@ leaderRouter.route('/:leaderId')
             .catch((err) => next(err));
     })
     .delete(authenticate.verifyUser,(req, res, next) => {
+        if(!authenticate.verifyAdmin(req)) {
+            var err = new Error('You are not authorized to perform this operation!');
+            err.status = 403;
+            return next(err);
+        }
         Leaders.findByIdAndRemove(req.params.leaderId)
             .then((resp) => {
                 res.statusCode = 200;
