@@ -3,14 +3,15 @@ const bodyParser = require('body-parser');
 const User = require('../models/users');
 const authenticate = require('../authenticate');
 const usersRouter = express.Router();
-
+const cors = require('./cors');
 const passport = require('passport');
 
 usersRouter.use(bodyParser.json());
 
 /* GET users listing. */
 usersRouter.route('/')
-  .get(authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
+  .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+  .get(cors.cors,authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     // if (!authenticate.verifyAdmin(req)) {
     //   var err = new Error('You are not authorized to perform this operation!');
     //   err.status = 403;
@@ -41,7 +42,7 @@ usersRouter.route('/')
 //   // res.send('respond with a resource');
 // }));
 
-usersRouter.post('/signup', (req, res, next) => {
+usersRouter.post('/signup', cors.corsWithOptions, (req, res, next) => {
   User.register(new User({ username: req.body.username }),
     req.body.password, (err, user) => {
       if (err) {
@@ -71,7 +72,7 @@ usersRouter.post('/signup', (req, res, next) => {
     });
 });
 
-usersRouter.post('/login', passport.authenticate('local'), (req, res) => {
+usersRouter.post('/login',cors.corsWithOptions,  passport.authenticate('local'), (req, res) => {
 
   var token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;

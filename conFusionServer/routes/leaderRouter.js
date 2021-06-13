@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const Leaders = require('../models/leaders');
 var authenticate = require('../authenticate');
 const leaderRouter = express.Router();
+const cors = require('./cors');
 
 leaderRouter.use(bodyParser.json());
 
 leaderRouter.route('/')
-    .get((req, res, next) => {
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
         Leaders.find({})
             .then((leaders) => {
                 res.statusCode = 200;
@@ -16,8 +18,8 @@ leaderRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
@@ -31,8 +33,8 @@ leaderRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
@@ -40,8 +42,8 @@ leaderRouter.route('/')
         res.statusCode = 403;
         res.end('PUT operation not supported on /leaders');
     })
-    .delete(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
@@ -56,7 +58,8 @@ leaderRouter.route('/')
     });
 
 leaderRouter.route('/:leaderId')
-    .get((req, res, next) => {
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
         Leaders.findById(req.params.leaderId)
             .then((leader) => {
                 res.statusCode = 200;
@@ -65,8 +68,8 @@ leaderRouter.route('/:leaderId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
@@ -74,8 +77,8 @@ leaderRouter.route('/:leaderId')
         res.statusCode = 403;
         res.end('POST operation not supported on /leaders/' + req.params.leaderId);
     })
-    .put(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
@@ -90,8 +93,8 @@ leaderRouter.route('/:leaderId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(authenticate.verifyUser,(req, res, next) => {
-        if(!authenticate.verifyAdmin(req)) {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        if (!authenticate.verifyAdmin(req)) {
             var err = new Error('You are not authorized to perform this operation!');
             err.status = 403;
             return next(err);
