@@ -56,6 +56,7 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
     clientID: config.facebook.clientId,
     clientSecret: config.facebook.clientSecret
 }, (accessToken, refreshToken, profile, done) => {
+    console.log("===> Login Successfully.");
     User.findOne({ facebookId: profile.id }, (err, user) => {
         if (err) {
             return done(err, false);
@@ -64,6 +65,7 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
             return done(null, user);
         }
         else {
+            console.log("Saving new user");
             user = new User({ username: profile.displayName });
             user.facebookId = profile.id;
             user.firstname = profile.name.givenName;

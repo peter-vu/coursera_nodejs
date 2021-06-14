@@ -3,6 +3,6 @@ module.exports = {
     'mongoUrl' : 'mongodb://localhost:27017/conFusion',
     'facebook': {
         clientId: '867959837484899',
-        clientSecret: 'Yafb91d71ab6ee9ceb39ad038cca63893'
+        clientSecret: 'afb91d71ab6ee9ceb39ad038cca63893'
     }
 }

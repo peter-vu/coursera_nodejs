@@ -95,7 +95,10 @@ usersRouter.get('/logout', (req, res) => {
 });
 
 usersRouter.get('/facebook/token', passport.authenticate('facebook-token'), (req, res) => {
+  console.log("req", req);
+  console.log("res", res);
   if (req.user) {
+    console.log("==> facebook-token successfullly.")
     var token = authenticate.getToken({_id: req.user._id});
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

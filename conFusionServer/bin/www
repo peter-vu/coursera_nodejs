@@ -37,8 +37,10 @@ server.on('listening', onListening);
  */ 
  
  var options = {
-  key: fs.readFileSync(__dirname+'/private.key'),
-  cert: fs.readFileSync(__dirname+'/certificate.pem')
+  // key: fs.readFileSync(__dirname+'/private.key'),
+  // cert: fs.readFileSync(__dirname+'/certificate.pem')
+  key: fs.readFileSync(__dirname+'/localhost.key'),
+  cert: fs.readFileSync(__dirname+'/localhost.crt')
 };
 
 var secureServer = https.createServer(options,app);
