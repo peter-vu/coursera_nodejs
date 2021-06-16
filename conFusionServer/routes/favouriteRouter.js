@@ -109,8 +109,6 @@ favouriteRouter
             .catch(err => next(err));
     })
     .post(cors.corsWithOptions, verifyUser, (req, res, next) => {
-        // we well apply logic from route "/", insted of req.body we will use req.params.dishId
-        // we converted single dish to array for implement logic from route post to "/favourites"
         favourites.findOne({ user: req.user._id })
             .then(
                 favourite => {
